@@ -4,6 +4,14 @@ This module is about api custom permissions
 from rest_framework import permissions
 
 
+class IsUserOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        if request.user == obj:
+            return True
+        return False
 class IsAuthorOrReadOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
